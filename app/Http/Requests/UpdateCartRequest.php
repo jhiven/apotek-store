@@ -11,7 +11,7 @@ class UpdateCartRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,12 @@ class UpdateCartRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'nama' => 'required|string|max:255',
+            'kegunaan' => 'required|string|max:255',
+            'indikasi' => 'required|string|max:255',
+            'jenis' => 'required|string|max:255',
+            'dosis' => 'required|string|max:255',
+            'harga' => 'required|integer',
         ];
     }
 }

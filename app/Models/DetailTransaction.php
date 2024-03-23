@@ -22,6 +22,6 @@ class DetailTransaction extends Model
 
     public function drug(): BelongsTo
     {
-        return $this->belongsTo(Transaction::class);
+        return $this->belongsTo(Drug::class);
     }
 }

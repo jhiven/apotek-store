@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreTransactionRequest;
 use App\Http\Requests\UpdateTransactionRequest;
 use App\Models\Transaction;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TransactionController extends Controller
 {
@@ -13,15 +15,21 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        //
+        $transactions = Transaction::where('user_id', Auth::id())
+            ->with('detail_transactions.drug')
+            ->get();
+        // dd($transactions->first()->detail_transactions->first()->drug);
+        return view('transaction.index', compact('transactions'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        dd($request);
+        $cartIds = array_keys($request->carts);
+        return view('transaction.create-transaction');
     }
 
     /**
@@ -35,9 +43,14 @@ class TransactionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Transaction $transaction)
+    public function show(Transaction $transaksi)
     {
-        //
+        $detailTransactions = $transaksi
+            ->detail_transactions()
+            ->with('drug')
+            ->get();
+
+        return view('transaction.detail-transaction', compact('detailTransactions'));
     }
 
     /**

@@ -12,12 +12,24 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('obat.index')" :active="request()->routeIs('obat.index')">
-                        {{ __('Obat') }}
-                    </x-nav-link>
+                    @if (auth()->check() && auth()->user()->isAdmin())
+                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                            {{ __('Dashboard') }}
+                        </x-nav-link>
+                    @elseif (auth()->check() && ! auth()->user()->isAdmin())
+                        <x-nav-link :href="route('home')" :active="request()->routeIs('home')">
+                            {{ __('Home') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('obat.index')" :active="request()->routeIs('obat.*')">
+                            {{ __('Obat') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('keranjang.index')" :active="request()->routeIs('keranjang.*')">
+                            {{ __('Keranjang') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('transaksi.index')" :active="request()->routeIs('transaksi.*')">
+                            {{ __('Transaksi') }}
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -41,9 +53,11 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Profile') }}
-                        </x-dropdown-link>
+                        @if (auth()->check() && ! auth()->user()->isAdmin())
+                            <x-dropdown-link :href="route('profile.edit')">
+                                {{ __('Profile') }}
+                            </x-dropdown-link>
+                        @endif
 
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
@@ -78,12 +92,21 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('obat.index')" :active="request()->routeIs('obat.index')">
-                {{ __('Obat') }}
-            </x-responsive-nav-link>
+            @if (auth()->check() && auth()->user()->isAdmin())
+                <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    {{ __('Dashboard') }}
+                </x-responsive-nav-link>
+            @else
+                <x-responsive-nav-link :href="route('obat.index')" :active="request()->routeIs('obat.*')">
+                    {{ __('Obat') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('keranjang.index')" :active="request()->routeIs('keranjang.*')">
+                    {{ __('Keranjang') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('transaksi.index')" :active="request()->routeIs('transaksi.*')">
+                    {{ __('Transaksi') }}
+                </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->

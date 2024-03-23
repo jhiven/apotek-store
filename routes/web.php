@@ -1,11 +1,9 @@
 <?php
 
 use App\Http\Controllers\CartController;
-use App\Http\Controllers\DetailTransactionController;
 use App\Http\Controllers\DrugController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TransactionController;
-use App\Models\DetailTransaction;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,23 +18,27 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/login');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+});
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'verified', 'customer'])->group(function () {
+    Route::get('/home', function () {
+        return view('home');
+    })->name('home');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::resources([
         'obat' => DrugController::class,
         'transaksi' => TransactionController::class,
-        'detail-transaksi' => DetailTransactionController::class,
-        'cart' => CartController::class,
     ]);
+    Route::resource('keranjang', CartController::class)->only('index', 'destroy', 'store', 'create', 'update');
 });
 
 

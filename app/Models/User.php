@@ -9,7 +9,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable {
+class User extends Authenticatable
+{
     use HasApiTokens, HasFactory, Notifiable;
 
     /**
@@ -51,5 +52,11 @@ class User extends Authenticatable {
     public function cart(): HasMany
     {
         return $this->hasMany(Cart::class);
+    }
+
+    public function isAdmin(): bool
+    {
+        if ($this->is_admin) return true;
+        else return false;
     }
 }

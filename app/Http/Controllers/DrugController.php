@@ -11,14 +11,17 @@ class DrugController extends Controller
     public function index()
     {
         $drugs = Drug::get();
-        return view('obat', compact('drugs'));
+
+        return view('drug.obat', compact('drugs'));
     }
 
     /**
      * Show the form for creating a new resource.
+     *
      */
     public function create()
     {
+
     }
 
     /**
@@ -26,30 +29,33 @@ class DrugController extends Controller
      */
     public function store(StoreDrugRequest $request)
     {
+
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Drug $drug, string $id)
+    public function show(Drug $obat)
     {
-        return view('detail-obat', ['drug' => Drug::findOrFail($id)]);
+        return view('drug.detail-obat', ['drug' => $obat]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Drug $drug)
+    public function edit(Drug $obat)
     {
-        //
+        return view('drug.edit-obat', ['drug' => $obat]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateDrugRequest $request, Drug $drug)
+    public function update(UpdateDrugRequest $request, Drug $obat)
     {
-        //
+        $obat->update($request->validated());
+
+        return redirect()->route('obat.index');
     }
 
     /**
