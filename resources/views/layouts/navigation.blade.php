@@ -16,7 +16,16 @@
                         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                             {{ __('Dashboard') }}
                         </x-nav-link>
-                    @elseif (auth()->check() && ! auth()->user()->isAdmin())
+                        <x-nav-link :href="route('admin.obat')" :active="request()->routeIs('admin.obat')">
+                            {{ __('Obat') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('admin.transaksi')" :active="request()->routeIs('admin.transaksi')">
+                            {{ __('Transaksi') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('admin.user-list')" :active="request()->routeIs('admin.user-list')">
+                            {{ __('User') }}
+                        </x-nav-link>
+                    @elseif (auth()->check() && !auth()->user()->isAdmin())
                         <x-nav-link :href="route('home')" :active="request()->routeIs('home')">
                             {{ __('Home') }}
                         </x-nav-link>
@@ -53,22 +62,22 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        @if (auth()->check() && ! auth()->user()->isAdmin())
-                            <x-dropdown-link :href="route('profile.edit')">
-                                {{ __('Profile') }}
-                            </x-dropdown-link>
-                        @endif
+                        <x-dropdown-link :href="route('profile.edit')">
+                            {{ __('Profile') }}
+                        </x-dropdown-link>
 
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
-                            @csrf
+                            <!-- Authentication -->
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
 
-                            <x-dropdown-link :href="route('logout')"
-                                onclick="event.preventDefault();
+                                <x-dropdown-link :href="route('logout')"
+                                    onclick="event.preventDefault();
                                                 this.closest('form').submit();">
-                                {{ __('Log Out') }}
-                            </x-dropdown-link>
-                        </form>
+                                    {{ __('Log Out') }}
+                                </x-dropdown-link>
+                            </form>
                     </x-slot>
                 </x-dropdown>
             </div>

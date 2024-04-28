@@ -24,7 +24,14 @@ class DatabaseSeeder extends Seeder
             'is_admin' => true,
             'password' => Hash::make('123123123'),
         ];
+        $userAccount = [
+            'name' => 'Jhiven Agnar',
+            'email' => 'jivenagnar11@gmail.com',
+            'is_admin' => false,
+            'password' => Hash::make('password'),
+        ];
         User::factory()->create($adminAccount);
+        User::factory()->create($userAccount);
         User::factory(10)
             ->has(Cart::factory(3)->state(function (array $attributes, user $user) {
                 return [

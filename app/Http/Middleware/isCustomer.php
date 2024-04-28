@@ -20,7 +20,7 @@ class isCustomer
             if (!Auth::user()->is_admin) {
                 return $next($request);
             } else {
-                return back();
+                return abort(401);
             }
         }
         return to_route('login');

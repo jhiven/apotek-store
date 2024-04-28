@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('transaction_id')->constrained();
             $table->foreignId('drug_id')->constrained();
             $table->integer('quantity');
-            $table->integer('subtotal');
+            $table->biginteger('subtotal');
             $table->timestamps();
         });
     }

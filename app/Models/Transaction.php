@@ -13,6 +13,7 @@ class Transaction extends Model
 
     protected $fillable = [
         'total_harga',
+        'user_id',
     ];
 
     public function user(): BelongsTo

@@ -6,6 +6,9 @@ use App\Http\Requests\StoreCartRequest;
 use App\Http\Requests\UpdateCartRequest;
 use App\Models\Cart;
 use App\Models\Drug;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,28 +19,30 @@ class CartController extends Controller
      *
      * @return view
      */
-    public function index()
+    public function index(): View|Factory
     {
         $carts = Cart::where('user_id', Auth::id())
             ->with('drug')
             ->get();
 
-        return view('cart.index', compact('carts'));
+        return view('pages.user.cart.index', compact('carts'));
     }
 
     /**
      * Show the form for creating a new resource.
+     * @return View|Factory
      */
-    public function create(Request $request)
+    public function create(Request $request): View|Factory
     {
         $drug = Drug::find($request->id);
-        return view('cart.create-cart', compact('drug'));
+        return view('pages.user.cart.create-cart', compact('drug'));
     }
 
     /**
      * Store a newly created resource in storage.
+     * @return RedirectResponse
      */
-    public function store(StoreCartRequest $request)
+    public function store(StoreCartRequest $request): RedirectResponse
     {
         Cart::insert([
             'user_id' => Auth::id(),
@@ -51,8 +56,9 @@ class CartController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     * @return null|RedirectResponse
      */
-    public function destroy(Request $request, Cart $keranjang)
+    public function destroy(Request $request, Cart $keranjang): ?RedirectResponse
     {
         $keranjang->delete();
 
@@ -64,8 +70,9 @@ class CartController extends Controller
 
     /**
      * Update the specified resource in storage.
+     * @return void
      */
-    public function update(UpdateCartRequest $request, Cart $cart)
+    public function update(UpdateCartRequest $request, Cart $cart): void
     {
         //
     }

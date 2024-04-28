@@ -16,6 +16,15 @@ use Illuminate\View\View;
 class RegisteredUserController extends Controller
 {
     /**
+     * Display the list of users for admin
+     */
+    public function index(): View
+    {
+        $userList = User::where('is_admin', false)->get();
+
+        return view('pages.admin.user.index', compact('userList'));
+    }
+    /**
      * Display the registration view.
      */
     public function create(): View

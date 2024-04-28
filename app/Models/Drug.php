@@ -28,4 +28,5 @@ class Drug extends Model
   {
     return $this->hasMany(Cart::class);
   }
+
 }
