@@ -35,7 +35,8 @@
         @endforeach
     </div>
 
-    <x-primary-button tag="a" href="{{ url()->previous() }}" class="mt-6">
+    <x-primary-button tag="a" href="{{ url()->previous() }}"
+        class="mt-8">
         back
     </x-primary-button>
 

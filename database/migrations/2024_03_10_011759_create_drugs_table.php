@@ -14,11 +14,12 @@ return new class () extends Migration {
             $table->id();
             $table->text('image_url');
             $table->string('nama');
-            $table->string('kegunaan');
-            $table->string('indikasi');
+            $table->text('deskripsi');
+            $table->text('indikasi');
             $table->string('jenis');
             $table->string('dosis');
             $table->integer('harga');
+            $table->integer('stok');
             $table->timestamps();
         });
     }

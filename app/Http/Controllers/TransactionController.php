@@ -6,7 +6,9 @@ use App\Http\Requests\StoreTransactionRequest;
 use App\Http\Requests\UpdateTransactionRequest;
 use App\Models\Cart;
 use App\Models\DetailTransaction;
+use App\Models\Drug;
 use App\Models\Transaction;
+use App\Models\User;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -19,15 +21,24 @@ class TransactionController extends Controller
      * Display a listing of the resource.
      * @return View|Factory
      */
-    public function index(): View|Factory
+    public function index(int $userId = null): View|Factory
     {
+        if (isset($userId)) {
+            $transactions = Transaction::whereUserId($userId)
+                ->with('detail_transactions.drug')
+                ->get();
+            $user = User::find($userId);
+
+            return view('pages.admin.transaction.index', compact('transactions', 'user'));
+        }
+
         if (Auth::user()->is_admin) {
             $transactions = Transaction::with('detail_transactions.drug')
                 ->get();
 
             return view('pages.admin.transaction.index', compact('transactions'));
         } else {
-            $transactions = Transaction::where('user_id', Auth::id())
+            $transactions = Transaction::whereUserId(Auth::id())
                 ->with('detail_transactions.drug')
                 ->get();
 
@@ -67,6 +78,9 @@ class TransactionController extends Controller
         ]);
 
         for ($i = 0; $i < count($request->drugIdList); $i++) {
+            Drug::find($request->drugIdList[$i])
+                ->decrement('stok', $request->quantity[$i]);
+
             DetailTransaction::insert([
                 'transaction_id' => $transactionId->id,
                 'drug_id' => $request->drugIdList[$i],
@@ -88,12 +102,15 @@ class TransactionController extends Controller
      */
     public function show(Transaction $transaksi): View|Factory
     {
+
         $detailTransactions = $transaksi
             ->detail_transactions()
             ->with('drug')
             ->get();
 
-        return view('pages.user.transaction.detail-transaction', compact('detailTransactions'));
+        return Auth::user()->is_admin
+            ? view('pages.admin.transaction.detail-transaction', compact('detailTransactions'))
+            : view('pages.user.transaction.detail-transaction', compact('detailTransactions'));
     }
 
     /**

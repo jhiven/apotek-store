@@ -1,7 +1,8 @@
 <x-app-layout>
-    <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight mb-4 text-center">
+    <h2 class="text-3xl font-bold text-black">
         {{ __('Pembayaran') }}
     </h2>
+    <hr class="mt-2 mb-8" />
 
     @php
         $total = 0;
@@ -17,36 +18,36 @@
             <input type="hidden" name="drugIdList[]" value="{{ $cart->drug_id }}">
             <input type="hidden" name="quantity[]" value="{{ $cart->quantity }}">
             <input type="hidden" name="subtotal[]" value="{{ $subtotal }}">
-            <div class="mt-7">
+            <div>
                 Produk {{ $key + 1 }}
                 <div
-                    class="flex flex-col mt-2 items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row  dark:border-gray-700 dark:bg-gray-800 ">
-                    <img class="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-s-lg"
+                    class="mt-2 flex flex-col items-center overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm md:flex-row">
+                    <img class="h-96 w-full rounded-t-lg object-cover md:h-auto md:w-48 md:rounded-none md:rounded-s-lg"
                         src="{{ $cart->drug->image_url }}" alt="">
-                    <div class="flex flex-col justify-between p-4 w-full leading-normal">
+                    <div class="flex w-full flex-col justify-between p-4 leading-normal">
                         <div class="flex justify-between">
-                            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                            <h5 class="mb-2 text-xl font-bold tracking-tight text-gray-900">
                                 {{ $cart->drug->nama }}</h5>
                             <div class="flex">
                                 <div class="mr-2">{{ $cart->quantity }}</div>
                                 <p>x</p>
-                                <x-price class="mb-2 ml-2 tracking-tight text-gray-900 dark:text-white"
+                                <x-price class="mb-2 ml-2 tracking-tight text-gray-900"
                                     value="{{ $cart->drug->harga }}">
                                 </x-price>
                             </div>
                         </div>
-                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Jenis: {{ $cart->drug->jenis }}
+                        <p class="mb-3 font-normal text-gray-700">
+                            {{ $cart->drug->jenis }}
                         </p>
                     </div>
                 </div>
             </div>
         @endforeach
 
-        <div class="flex justify-between mt-8">
-            <x-price value="{{ $total }}" class="">
+        <div class="mt-8 flex items-center justify-between">
+            <x-price value="{{ $total }}" class="text-lg">
                 Total pembayaran:
             </x-price>
-
             <x-primary-button>Beli</x-primary-button>
         </div>
     </form>

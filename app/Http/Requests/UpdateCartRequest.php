@@ -23,7 +23,7 @@ class UpdateCartRequest extends FormRequest
     {
         return [
             'nama' => 'required|string|max:255',
-            'kegunaan' => 'required|string|max:255',
+            'deskripsi' => 'required|string|max:255',
             'indikasi' => 'required|string|max:255',
             'jenis' => 'required|string|max:255',
             'dosis' => 'required|string|max:255',

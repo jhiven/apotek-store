@@ -26,18 +26,21 @@ class DrugController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return void
+     * @return View
      */
-    public function create(): void
+    public function create(): View
     {
+        return view('pages.admin.drug.create-obat');
     }
 
     /**
      * Store a newly created resource in storage.
-     * @return void
+     * @return RedirectResponse
      */
-    public function store(StoreDrugRequest $request): void
+    public function store(StoreDrugRequest $request): RedirectResponse
     {
+        Drug::insert($request->validated());
+        return to_route('admin.obat.index');
     }
 
     /**
@@ -46,7 +49,9 @@ class DrugController extends Controller
      */
     public function show(Drug $obat): View|Factory
     {
-        return view('pages.user.drug.detail-obat', ['drug' => $obat]);
+        return Auth::user()->is_admin
+            ? view('pages.admin.drug.detail-obat', ['drug' => $obat])
+            : view('pages.user.drug.detail-obat', ['drug' => $obat]);
     }
 
     /**
@@ -55,7 +60,7 @@ class DrugController extends Controller
      */
     public function edit(Drug $obat): View|Factory
     {
-        return view('pages.user.drug.edit-obat', ['drug' => $obat]);
+        return view('pages.admin.drug.edit-obat', ['drug' => $obat]);
     }
 
     /**
@@ -66,15 +71,16 @@ class DrugController extends Controller
     {
         $obat->update($request->validated());
 
-        return redirect()->route('obat.index');
+        return to_route('admin.obat.index');
     }
 
     /**
      * Remove the specified resource from storage.
-     * @return void
      */
-    public function destroy(Drug $drug): void
+    public function destroy(Drug $obat)
     {
-        //
+        $obat->delete();
+
+        return to_route('admin.obat.index');
     }
 }

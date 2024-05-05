@@ -6,6 +6,7 @@ use App\Http\Requests\StoreCartRequest;
 use App\Http\Requests\UpdateCartRequest;
 use App\Models\Cart;
 use App\Models\Drug;
+use App\Models\User;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -51,7 +52,7 @@ class CartController extends Controller
             'created_at' => now(),
             'updated_at' => now()
         ]);
-        return redirect()->route('keranjang.index');
+        return to_route('keranjang.index');
     }
 
     /**
@@ -62,7 +63,6 @@ class CartController extends Controller
     {
         $keranjang->delete();
 
-        // return redirect()->route('keranjang.index');
         return $request->expectsJson()
             ? null
             : back();
@@ -75,5 +75,17 @@ class CartController extends Controller
     public function update(UpdateCartRequest $request, Cart $cart): void
     {
         //
+    }
+
+    /**
+     * Display the specified resource.
+     * @return View|Factory
+     */
+    public function show(Request $request, int $userId): View|Factory
+    {
+        $carts = Cart::whereUserId($userId)->with('drug')->get();
+        $user = User::find($userId);
+
+        return view('pages.admin.user.cart', compact('carts', 'user'));
     }
 }
