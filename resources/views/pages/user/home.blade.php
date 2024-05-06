@@ -1,25 +1,30 @@
 <x-app-layout>
-    <x-carousel
+   
+<x-carousel
+    
         data="[{
-            imgSrc: '{{ $drugs[0]->image_url }}',
-            imgAlt: '{{ $drugs[0]->nama }}',
-            title: '{{ $drugs[0]->nama }}',
-            description: '{{ $drugs[0]->deskripsi }}',
+            imgSrc: '{{ asset('doctor.jpg')}}',
+            imgAlt: '{{'doctor'}}',
+            title: '{{ 'Rekomendasi Produk yang Dipersonalisasi' }}',
+            description: '{{ ' Dapatkan rekomendasi produk yang dipersonalisasi berdasarkan riwayat kesehatan dan preferensi Anda. Kami akan membantu Anda menemukan obat-obatan dan produk-produk kesehatan yang sesuai dengan kebutuhan Anda secara individual.' }}',
+            
         },
         {
-            imgSrc: '{{ $drugs[1]->image_url }}',
-            imgAlt: '{{ $drugs[1]->nama }}',
-            title: '{{ $drugs[1]->nama }}',
-            description: '{{ $drugs[1]->deskripsi }}',
+            imgSrc: '{{ asset('medicine.jpg') }}',
+            imgAlt: '{{ 'medicine.png' }}',
+            title: '{{' Komitmen pada Keberlanjutan dan Kualitas' }}',
+            description: '{{'Kami berkomitmen untuk menjaga keberlanjutan dan kualitas produk kami. Dengan memilih apotek online kami, Anda tidak hanya merawat kesehatan Anda sendiri, tetapi juga membantu menjaga kesehatan planet ini dengan mendukung praktik bisnis yang bertanggung jawab.' }}',
+            
         },
         {
-            imgSrc: '{{ $drugs[2]->image_url }}',
-            imgAlt: '{{ $drugs[2]->nama }}',
-            title: '{{ $drugs[2]->nama }}',
-            description: '{{ $drugs[2]->deskripsi }}',
+            imgSrc: '{{ asset('drug.jpg') }}',
+            imgAlt: '{{'drug.png'}}',
+            title: '{{'Pilihan Obat Lengkap dan Terpercaya'}}',
+            description: '{{' Temukan beragam obat dari merek terkemuka dan produk-produk kesehatan berkualitas tinggi di apotek online kami. Kami menawarkan pilihan yang luas untuk memenuhi kebutuhan kesehatan Anda.'}}',
         },
+    
     ]"></x-carousel>
-
+    
     <p class="mt-8 text-2xl font-medium">Obat jenis tablet</p>
     <div class="mt-2 grid grid-cols-5 gap-3">
         @foreach ($drugs->where('jenis', 'Tablet')->take(5) as $drug)

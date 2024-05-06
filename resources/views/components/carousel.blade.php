@@ -62,7 +62,7 @@
     </x-secondary-button>
     <!-- slides -->
     <!-- Change min-h-[50svh] to your preferred height size -->
-    <div class="relative min-h-[50svh] w-full">
+    <div class="relative min-h-[612px] w-full">
         <template x-for="(slide, index) in slides">
             <div x-cloak x-show="currentSlideIndex == index + 1" class="absolute inset-0"
                 x-transition.opacity.duration.1000ms>
@@ -70,9 +70,9 @@
                 <!-- Title and description -->
                 <div
                     class="from-blue-300/85 absolute inset-0 z-10 flex flex-col items-center justify-end gap-2 rounded-xl bg-gradient-to-t to-transparent px-16 py-12 text-center lg:px-32 lg:py-14">
-                    <h3 class="text-balance w-full text-2xl font-bold text-black lg:w-[80%] lg:text-3xl"
-                        x-text="slide.title" x-bind:aria-describedby="'slide' + (index + 1) + 'Description'"></h3>
-                    <p class="text-pretty line-clamp-3 w-full text-sm text-slate-700 lg:w-1/2"
+                    <h1 class="text-balance w-full text-3xl font-bold text-black lg:w-[80%] lg:text-3xl"
+                        x-text="slide.title" x-bind:aria-describedby="'slide' + (index + 1) + 'Description'"></h1>
+                    <p class="text-pretty line-clamp-3 w-full text-lg text-slate-700 lg:w-1/2"
                         x-text="slide.description" x-bind:id="'slide' + (index + 1) + 'Description'"></p>
                 </div>
 
