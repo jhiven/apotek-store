@@ -4,17 +4,25 @@
     </h2>
     <hr class="mb-8 mt-2" />
 
-    <img class="rounded-lg" src="" alt="" />
+    <div class="flex justify-center">
+        <img class="rounded-lg" id="cover"/>
+    </div>
 
-    <form action="{{ route('admin.obat.store') }}" method="POST">
+    <form action="{{ route('admin.obat.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
+
+        <div>
+            <x-input-label for="image" :value="__('Cover image')" />
+            <x-text-input id="image" class="mt-1 block w-full" type="file" name="image" :value="old('nama') ?? ''"
+                accept="image/*" />
+            <x-input-error :messages="$errors->get('image')" class="mt-2" />
+        </div>
         <div>
             <x-input-label for="nama" :value="__('Nama')" />
             <x-text-input id="nama" class="mt-1 block w-full" type="text" name="nama" :value="old('nama') ?? ''"
                 required />
             <x-input-error :messages="$errors->get('nama')" class="mt-2" />
         </div>
-        <input type="hidden" id="image_url" name="image_url" value="https://placehold.co/600x400?text=obat+test">
         <div class="mt-4">
             <x-input-label for="deskripsi" :value="__('Deskripsi')" />
             <x-text-input id="deskripsi" class="mt-1 block w-full" type="text" name="deskripsi" :value="old('deskripsi') ?? ''"
@@ -57,3 +65,18 @@
     </form>
 
 </x-app-layout>
+
+<script>
+    const chooseFile = document.getElementById("image");
+    const imgPreview = document.getElementById("cover");
+    chooseFile.addEventListener("change", function() {
+        const files = chooseFile.files[0];
+        if (files) {
+            const fileReader = new FileReader();
+            fileReader.readAsDataURL(files);
+            fileReader.addEventListener("load", function() {
+                imgPreview.src = this.result
+            });
+        }
+    });
+</script>

@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\File;
 
 class StoreDrugRequest extends FormRequest
 {
@@ -29,7 +31,7 @@ class StoreDrugRequest extends FormRequest
             'dosis' => 'required|string|max:255',
             'harga' => 'required|integer',
             'stok' => 'required|integer',
-            'image_url' => 'required|string',
+            'image' => File::image()->min('1kb')->max('1mb'),
         ];
     }
 }

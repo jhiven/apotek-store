@@ -51,6 +51,7 @@ class Drug extends Model
       'dosis',
       'harga',
       'stok',
+      'image_url',
     ];
 
     public function detailTransactions(): HasMany

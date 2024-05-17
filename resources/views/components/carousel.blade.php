@@ -1,8 +1,5 @@
 @props(['data'])
 
-
-@php
-@endphp
 <div x-data="{
     // Sets the time between each slides in milliseconds
     autoplayIntervalTime: 4000,

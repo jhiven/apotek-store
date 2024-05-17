@@ -9,6 +9,8 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class DrugController extends Controller
 {
@@ -39,7 +41,19 @@ class DrugController extends Controller
      */
     public function store(StoreDrugRequest $request): RedirectResponse
     {
-        Drug::insert($request->validated());
+        $drugId = DB::selectOne("SELECT nextval('drugs_id_seq') as val")->val;
+        $image_url = $request->file('image')->storePubliclyAs('obat_cover', $drugId);
+        Drug::insert([
+            'nama' => $request->nama,
+            'deskripsi' => $request->deskripsi,
+            'indikasi' => $request->indikasi,
+            'jenis' => $request->jenis,
+            'dosis' => $request->dosis,
+            'harga' => $request->harga,
+            'stok' => $request->stok,
+            'image_url' => Storage::url($image_url),
+        ]);
+
         return to_route('admin.obat.index');
     }
 
@@ -69,7 +83,22 @@ class DrugController extends Controller
      */
     public function update(UpdateDrugRequest $request, Drug $obat): RedirectResponse
     {
-        $obat->update($request->validated());
+        if (isset($request->image)) {
+            Storage::delete('obat_cover/' . $obat->id);
+            $image_url = $request->file('image')->storePubliclyAs('obat_cover', $obat->id);
+            $obat->update([
+                'nama' => $request->nama,
+                'deskripsi' => $request->deskripsi,
+                'indikasi' => $request->indikasi,
+                'jenis' => $request->jenis,
+                'dosis' => $request->dosis,
+                'harga' => $request->harga,
+                'stok' => $request->stok,
+                'image_url' => Storage::url($image_url),
+            ]);
+        } else {
+            $obat->update($request->validated());
+        }
 
         return to_route('admin.obat.index');
     }
@@ -79,6 +108,7 @@ class DrugController extends Controller
      */
     public function destroy(Drug $obat)
     {
+        Storage::delete('obat_cover/' . $obat->id);
         $obat->delete();
 
         return to_route('admin.obat.index');

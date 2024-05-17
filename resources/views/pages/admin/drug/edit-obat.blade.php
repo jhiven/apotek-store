@@ -1,12 +1,17 @@
 <x-app-layout>
     <div class="flex justify-center">
-        <img class="rounded-lg" src="{{ $drug->image_url }}" alt="{{ $drug->name }}" />
+        <img class="rounded-lg" src="{{ $drug->image_url }}" alt="{{ $drug->name }}" id="cover" />
     </div>
 
-    <form action="{{ route('admin.obat.update', $drug) }}" method="POST">
+    <form action="{{ route('admin.obat.update', $drug) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('patch')
 
+        <div>
+            <x-input-label for="image" :value="__('Cover image')" />
+            <x-text-input id="image" class="mt-1 block w-full" type="file" name="image" :value="old('nama') ?? ''"
+                accept="image/*" /> <x-input-error :messages="$errors->get('image')" class="mt-2" />
+        </div>
         <div>
             <x-input-label for="nama" :value="__('Nama')" />
             <x-text-input id="nama" class="mt-1 block w-full" type="text" name="nama" :value="old('nama') ?? $drug->nama"
@@ -55,3 +60,18 @@
     </form>
 
 </x-app-layout>
+
+<script>
+    const chooseFile = document.getElementById("image");
+    const imgPreview = document.getElementById("cover");
+    chooseFile.addEventListener("change", function() {
+        const files = chooseFile.files[0];
+        if (files) {
+            const fileReader = new FileReader();
+            fileReader.readAsDataURL(files);
+            fileReader.addEventListener("load", function() {
+                imgPreview.src = this.result
+            });
+        }
+    });
+</script>
